@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="p-0 border-none">
+            <SheetContent side="right" className="p-0 border-none w-full h-full">
               <div className="flex flex-col h-full bg-gradient-to-b from-[#f8f8ff] to-white">
                 <div className="flex justify-between items-center p-6 border-b">
                   <p className="text-xl font-bold text-[#312c86]">Naurat</p>
@@ -84,13 +84,13 @@ const Navbar: React.FC = () => {
                   </SheetClose>
                 </div>
 
-                <nav className="flex flex-col p-6">
+                <nav className="flex flex-col p-6 flex-grow">
                   {navLinks.map((link, index) => (
                     <a 
                       key={link.href} 
                       href={link.href} 
                       className={cn(
-                        "py-4 text-lg font-medium text-gray-800 transition-all hover:text-[#312c86]",
+                        "py-6 text-xl font-medium text-gray-800 transition-all hover:text-[#312c86]",
                         index < navLinks.length - 1 && "border-b border-gray-100"
                       )}
                       onClick={() => setIsOpen(false)}
@@ -99,11 +99,11 @@ const Navbar: React.FC = () => {
                     </a>
                   ))}
                   
-                  <div className="mt-8">
+                  <div className="mt-auto mb-8">
                     <a
                       href="https://calendly.com/team-naurat-kdlj/30min"
                       target='_blank'
-                      className="block w-full py-3 px-5 rounded-xl bg-[#312c86] text-white text-center font-medium transition-all transform hover:translate-y-[-2px] hover:shadow-lg"
+                      className="block w-full py-4 px-5 rounded-xl bg-[#312c86] text-white text-center font-medium text-lg transition-all transform hover:translate-y-[-2px] hover:shadow-lg"
                     >
                       Comenzar Ahora
                     </a>
