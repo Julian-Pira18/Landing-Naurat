@@ -1,9 +1,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Menu, X } from "lucide-react";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   // Change navbar style on scroll
   useEffect(() => {
@@ -20,6 +30,11 @@ const Navbar: React.FC = () => {
     };
   }, [scrolled]);
 
+  const navLinks = [
+    { name: "Cómo funciona", href: "#how-it-works" },
+    { name: "Beneficios", href: "#benefits" },
+  ];
+
   return (
     <header
       className={cn(
@@ -32,24 +47,64 @@ const Navbar: React.FC = () => {
           Naurat
         </a>
 
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#how-it-works" className="link-underline text-sm font-medium tracking-wide">Cómo funciona</a>
-          <a href="#benefits" className="link-underline text-sm font-medium tracking-wide">Beneficios</a>
+          {navLinks.map((link) => (
+            <a key={link.href} href={link.href} className="link-underline text-sm font-medium tracking-wide">
+              {link.name}
+            </a>
+          ))}
 
           <a
             href="https://calendly.com/team-naurat-kdlj/30min"
             target='_blank'
-            className="btn-hover-effect px-5 py-2 rounded-md bg-black text-white text-sm font-medium tracking-wide"
+            className="btn-hover-effect px-5 py-2 rounded-md bg-[#312c86] text-white text-sm font-medium tracking-wide"
           >
             Comenzar Ahora
           </a>
         </nav>
 
-        <button className="md:hidden relative z-10 p-2" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        {/* Mobile Navigation */}
+        {isMobile && (
+          <Drawer open={isOpen} onOpenChange={setIsOpen}>
+            <DrawerTrigger asChild>
+              <button className="md:hidden relative z-10 p-2" aria-label="Toggle menu">
+                <Menu className="h-6 w-6" />
+              </button>
+            </DrawerTrigger>
+            <DrawerContent className="h-[60vh] rounded-t-3xl bg-white p-6">
+              <div className="flex justify-between items-center mb-6">
+                <p className="text-xl font-bold">Menú</p>
+                <DrawerClose asChild>
+                  <button className="p-2" aria-label="Close menu">
+                    <X className="h-5 w-5" />
+                  </button>
+                </DrawerClose>
+              </div>
+
+              <nav className="flex flex-col space-y-6">
+                {navLinks.map((link) => (
+                  <a 
+                    key={link.href} 
+                    href={link.href} 
+                    className="text-lg font-medium border-b border-gray-100 pb-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                ))}
+                
+                <a
+                  href="https://calendly.com/team-naurat-kdlj/30min"
+                  target='_blank'
+                  className="btn-hover-effect mt-4 px-5 py-3 rounded-md bg-[#312c86] text-white text-base font-medium tracking-wide text-center"
+                >
+                  Comenzar Ahora
+                </a>
+              </nav>
+            </DrawerContent>
+          </Drawer>
+        )}
       </div>
     </header>
   );

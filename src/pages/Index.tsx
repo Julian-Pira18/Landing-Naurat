@@ -43,12 +43,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <main className="relative">
+      <main className="relative pt-16">
         <Hero />
         <HowItWorks />
         <Benefits />
         <DemoVideo />
-        {/* <Testimonials /> */}
+        <Testimonials />
         <CallToAction />
       </main>
       <Footer />
