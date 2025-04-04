@@ -2,17 +2,25 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu, X } from "lucide-react";
+import { Globe, Menu, X } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState("ES");
   const isMobile = useIsMobile();
 
   // Change navbar style on scroll
@@ -29,6 +37,11 @@ const Navbar: React.FC = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [scrolled]);
+
+  const changeLanguage = (lang: string) => {
+    setCurrentLanguage(lang);
+    console.log(`Language changed to: ${lang}`);
+  };
 
   const navLinks = [
     { name: "Cómo funciona", href: "#how-it-works" },
@@ -55,6 +68,34 @@ const Navbar: React.FC = () => {
             </a>
           ))}
 
+          {/* Desktop Language Selector */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="rounded-full border-[#312c86]/20 hover:bg-[#312c86]/5 hover:border-[#312c86]/30 flex items-center gap-1 px-3"
+              >
+                <Globe className="h-4 w-4 text-[#312c86]" />
+                <span className="font-medium text-[#312c86]">{currentLanguage}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-24">
+              <DropdownMenuItem 
+                className="flex justify-center cursor-pointer hover:bg-[#312c86]/5 hover:text-[#312c86]"
+                onClick={() => changeLanguage("ES")}
+              >
+                Español
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="flex justify-center cursor-pointer hover:bg-[#312c86]/5 hover:text-[#312c86]"
+                onClick={() => changeLanguage("EN")}
+              >
+                English
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <a
             href="https://calendly.com/team-naurat-kdlj/30min"
             target='_blank'
@@ -67,14 +108,43 @@ const Navbar: React.FC = () => {
         {/* Mobile Navigation */}
         {isMobile && (
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <button 
-                className="md:hidden relative z-10 p-2 rounded-full hover:bg-black/5 transition-colors" 
-                aria-label="Toggle menu"
-              >
-                <Menu className="h-6 w-6" />
-              </button>
-            </SheetTrigger>
+            <div className="flex items-center gap-3 md:hidden">
+              {/* Mobile Language Selector */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="rounded-full border-[#312c86]/20 hover:bg-[#312c86]/5 hover:border-[#312c86]/30 p-2"
+                  >
+                    <Globe className="h-5 w-5 text-[#312c86]" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-24">
+                  <DropdownMenuItem 
+                    className="flex justify-center cursor-pointer hover:bg-[#312c86]/5 hover:text-[#312c86]"
+                    onClick={() => changeLanguage("ES")}
+                  >
+                    Español
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="flex justify-center cursor-pointer hover:bg-[#312c86]/5 hover:text-[#312c86]"
+                    onClick={() => changeLanguage("EN")}
+                  >
+                    English
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
+              <SheetTrigger asChild>
+                <button 
+                  className="relative z-10 p-2 rounded-full hover:bg-black/5 transition-colors" 
+                  aria-label="Toggle menu"
+                >
+                  <Menu className="h-6 w-6" />
+                </button>
+              </SheetTrigger>
+            </div>
             <SheetContent side="right" className="p-0 border-none w-full h-full">
               <div className="flex flex-col h-full bg-gradient-to-b from-[#f8f8ff] to-white">
                 <div className="flex justify-between items-center p-6 border-b">
@@ -98,6 +168,35 @@ const Navbar: React.FC = () => {
                       {link.name}
                     </a>
                   ))}
+                  
+                  {/* Mobile Language Switcher in Menu */}
+                  <div className="mt-6 border-b border-gray-100 pb-6">
+                    <p className="text-gray-500 mb-4 text-lg">Idioma</p>
+                    <div className="flex gap-4">
+                      <button
+                        onClick={() => changeLanguage("ES")}
+                        className={cn(
+                          "px-4 py-2 rounded-xl border font-medium text-lg transition-all",
+                          currentLanguage === "ES" 
+                            ? "bg-[#312c86] text-white border-[#312c86]" 
+                            : "border-gray-200 text-gray-700 hover:border-[#312c86]/30"
+                        )}
+                      >
+                        Español
+                      </button>
+                      <button
+                        onClick={() => changeLanguage("EN")}
+                        className={cn(
+                          "px-4 py-2 rounded-xl border font-medium text-lg transition-all",
+                          currentLanguage === "EN" 
+                            ? "bg-[#312c86] text-white border-[#312c86]" 
+                            : "border-gray-200 text-gray-700 hover:border-[#312c86]/30"
+                        )}
+                      >
+                        English
+                      </button>
+                    </div>
+                  </div>
                   
                   <div className="mt-auto mb-8">
                     <a
