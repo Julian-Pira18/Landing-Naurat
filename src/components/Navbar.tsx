@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, X } from "lucide-react";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -66,44 +66,56 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMobile && (
-          <Drawer open={isOpen} onOpenChange={setIsOpen}>
-            <DrawerTrigger asChild>
-              <button className="md:hidden relative z-10 p-2" aria-label="Toggle menu">
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <button 
+                className="md:hidden relative z-10 p-2 rounded-full hover:bg-black/5 transition-colors" 
+                aria-label="Toggle menu"
+              >
                 <Menu className="h-6 w-6" />
               </button>
-            </DrawerTrigger>
-            <DrawerContent className="h-[60vh] rounded-t-3xl bg-white p-6">
-              <div className="flex justify-between items-center mb-6">
-                <p className="text-xl font-bold">Menú</p>
-                <DrawerClose asChild>
-                  <button className="p-2" aria-label="Close menu">
+            </SheetTrigger>
+            <SheetContent side="right" className="p-0 border-none">
+              <div className="flex flex-col h-full bg-gradient-to-b from-[#f8f8ff] to-white">
+                <div className="flex justify-between items-center p-6 border-b">
+                  <p className="text-xl font-bold text-[#312c86]">Naurat</p>
+                  <SheetClose className="rounded-full p-2 hover:bg-black/5 transition-colors">
                     <X className="h-5 w-5" />
-                  </button>
-                </DrawerClose>
-              </div>
+                  </SheetClose>
+                </div>
 
-              <nav className="flex flex-col space-y-6">
-                {navLinks.map((link) => (
-                  <a 
-                    key={link.href} 
-                    href={link.href} 
-                    className="text-lg font-medium border-b border-gray-100 pb-2"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.name}
-                  </a>
-                ))}
+                <nav className="flex flex-col p-6">
+                  {navLinks.map((link, index) => (
+                    <a 
+                      key={link.href} 
+                      href={link.href} 
+                      className={cn(
+                        "py-4 text-lg font-medium text-gray-800 transition-all hover:text-[#312c86]",
+                        index < navLinks.length - 1 && "border-b border-gray-100"
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                  
+                  <div className="mt-8">
+                    <a
+                      href="https://calendly.com/team-naurat-kdlj/30min"
+                      target='_blank'
+                      className="block w-full py-3 px-5 rounded-xl bg-[#312c86] text-white text-center font-medium transition-all transform hover:translate-y-[-2px] hover:shadow-lg"
+                    >
+                      Comenzar Ahora
+                    </a>
+                  </div>
+                </nav>
                 
-                <a
-                  href="https://calendly.com/team-naurat-kdlj/30min"
-                  target='_blank'
-                  className="btn-hover-effect mt-4 px-5 py-3 rounded-md bg-[#312c86] text-white text-base font-medium tracking-wide text-center"
-                >
-                  Comenzar Ahora
-                </a>
-              </nav>
-            </DrawerContent>
-          </Drawer>
+                <div className="mt-auto p-6 text-center text-sm text-gray-500">
+                  © 2025 Naurat. Todos los derechos reservados.
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         )}
       </div>
     </header>
