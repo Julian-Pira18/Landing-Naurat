@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
             </a>
           ))}
 
-          {/* Desktop Language Selector */}
+          {/* Desktop Language Selector - Modified to prevent layout shifts */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
@@ -80,7 +80,15 @@ const Navbar: React.FC = () => {
                 <span className="font-medium text-[#312c86]">{currentLanguage}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-24">
+            <DropdownMenuContent 
+              align="end" 
+              className="w-24 bg-white" 
+              sideOffset={5}
+              // Added styles to prevent layout shift
+              forceMount={true}
+              style={{ transform: 'translateY(0)' }}
+              avoidCollisions={false}
+            >
               <DropdownMenuItem 
                 className="flex justify-center cursor-pointer hover:bg-[#312c86]/5 hover:text-[#312c86]"
                 onClick={() => changeLanguage("ES")}
@@ -109,7 +117,7 @@ const Navbar: React.FC = () => {
         {isMobile && (
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <div className="flex items-center gap-3 md:hidden">
-              {/* Mobile Language Selector */}
+              {/* Mobile Language Selector - Modified to prevent layout shifts */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 
@@ -120,7 +128,15 @@ const Navbar: React.FC = () => {
                     <Globe className="h-5 w-5 text-[#312c86]" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-24">
+                <DropdownMenuContent 
+                  align="end" 
+                  className="w-24 bg-white"
+                  sideOffset={5}
+                  // Added styles to prevent layout shift
+                  forceMount={true}
+                  style={{ transform: 'translateY(0)' }}
+                  avoidCollisions={false}
+                >
                   <DropdownMenuItem 
                     className="flex justify-center cursor-pointer hover:bg-[#312c86]/5 hover:text-[#312c86]"
                     onClick={() => changeLanguage("ES")}
